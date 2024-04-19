@@ -1,0 +1,155 @@
+.newDiv {
+  /* min-block-size: 100vb; */
+  font-family: sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: #f0f0f0;
+  background-image: linear-gradient(to right bottom, #5a8394, #4e2ba0, #d69595);
+}
+
+.aTag {
+  color : white!important;
+  text-decoration : none!important;
+}
+.titleFont{
+  font-family: "Century Gothic", 'Lato', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 3rem;
+  row-gap: 1rem;
+  padding-block: 2.2rem;
+  padding-inline: 3rem;
+  border-radius: 0.5rem;
+  background-color: rgba(119, 28, 191, 0.5);
+}
+
+.header__logo {
+  margin: 0;
+}
+
+.header__img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.header__ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.header__li {
+  position: relative;
+}
+
+.header__a {
+  display: block;
+  padding-inline: 1.5rem;
+  padding-block: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(15, 33, 85, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  border-radius: 0.5rem;
+}
+
+.header__a:hover {
+  color: rgba(240, 240, 240, 0.95);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: rgba(15, 33, 85, 0.9);
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 0.5rem;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  top: calc(100% + 8px);
+  left: 0;
+}
+
+.header__a.open .dropdown-content {
+  display: block;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 0.8rem 1.5rem;
+  color: rgba(240, 240, 240, 0.9);
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(15, 33, 85, 0.8);
+}
+
+
+
+
+
+
+
+/* Style the tooltip container */
+/* Add a specific class for tooltip */
+.tooltip-container .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(15, 33, 85, 0.9);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the tooltip text on hover */
+.tooltip-container:hover .tooltiptext {
+  margin: 10px;
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1090px) {
+  .header {
+      padding-block: 3rem;
+      flex-direction: column;
+  }
+
+  .header__ul {
+      margin-block-end: 0;
+      margin-block-start: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+  }
+}
