@@ -9,7 +9,7 @@ const Wishlist = () => {
     const [userId, setUserId] = useState(null);
     const [isHeartFilled, setIsHeartFilled] = useState(Array(products.length).fill(false));
 
-    const styles = `
+    const styles = `    
     // body {
     //     padding-top: 56px;
     // }
@@ -67,7 +67,7 @@ const Wishlist = () => {
 
     .surprise-bubble {
         position: absolute;
-        bottom: 12rem;
+        bottom: 22rem;
         right: 2rem;
         border-radius: 50%;
         width: 30px;
@@ -244,7 +244,8 @@ const Wishlist = () => {
                                 </div>
                             </div>
                             <div className="dress-card-body">
-                                <h4 className="dress-card-title">{products.name}</h4>
+                                <h5 className="dress-card-title">{products.name}</h5>
+                                <p className="dress-card-para">{products.description}</p>
                                 <p className="dress-card-para">
                                     {products.discount ? (
                                         <>
@@ -256,7 +257,6 @@ const Wishlist = () => {
                                         <span className="dress-card-price">🤑🤑 Rs. {products.price} &ensp;</span>
                                     }
                                 </p>
-                                <p className="dress-card-para">{products.description}, {products.rating}</p>
                             </div>
                         </div>
 

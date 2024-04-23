@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import './css/dashboard.css'; // Import your CSS file here
-import $ from 'jquery'; // Import jQuery library
+import React, { useEffect, useState } from 'react';
+import './css/dashboard.css';
+import Lottie from "lottie-react";
+import logo from "./animations/logo.json";
 import Fashion from './sections/Fashion';
 import BeautyandGrooming from './sections/Beauty&Grooming';
 import Lifestyle from './sections/Lifestyle';
@@ -9,129 +10,127 @@ import Wellness from './sections/Wellness';
 import Gifts from './sections/Gifts';
 import Experiences from './sections/Experiences';
 import Collectibles from './sections/Collectibles';
-
-import Lottie from "lottie-react";
-import logo from "./animations/logo.json";
-
+import Sections from './Sections';
 
 function Dashboard() {
+  const [sections, setSections] = useState([]);
+
   useEffect(() => {
-    $(document).ready(function() {
-      class StickyNavigation {
-        constructor() {
-          this.currentId = null;
-          this.currentTab = null;
-          this.tabContainerHeight = 70;
-          $('.et-hero-tab').click((event) => this.onTabClick(event, $(event.target)));
-          $(window).scroll(() => this.onScroll());
-          $(window).resize(() => this.onResize());
+    fetch('http://localhost:4000/allSection')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to fetch data');
         }
+      })
+      .then(data => {
+        setSections(data.sections);
+      })
+      .catch(error => {
+        console.error("Error fetching sections:", error);
+      });
+  }, [sections]);
 
-        onTabClick(event, element) {
-          event.preventDefault();
-          const scrollTop = $(element.attr('href')).offset().top - this.tabContainerHeight + 1;
-          $('html, body').animate({ scrollTop }, 600);
-        }
+  const handleTabClick = (event, index) => {
+    event.preventDefault();
+    const sectionId = sections[index]._id;
+    const scrollTop = document.getElementById(sectionId).offsetTop - 70 + 1;
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+  };
 
-        onScroll() {
-          this.checkTabContainerPosition();
-          this.findCurrentTabSelector();
-        }
-
-        onResize() {
-          if (this.currentId) {
-            this.setSliderCss();
-          }
-        }
-
-        checkTabContainerPosition() {
-          const $etHeroTabs = $('.et-hero-tabs');
-          if ($etHeroTabs.length === 0) return; // Exit if element not found
-          
-          const offset = $etHeroTabs.offset().top + $etHeroTabs.height() - this.tabContainerHeight;
-          if ($(window).scrollTop() > offset) {
-            $('.et-hero-tabs-container').addClass('et-hero-tabs-container--top');
-          } else {
-            $('.et-hero-tabs-container').removeClass('et-hero-tabs-container--top');
-          }
-        }
-
-        findCurrentTabSelector() {
-          const self = this;
-          $('.et-hero-tab').each(function () {
-            const id = $(this).attr('href');
-            const offsetTop = $(id).offset().top - self.tabContainerHeight;
-            const offsetBottom = $(id).offset().top + $(id).height() - self.tabContainerHeight;
-            if ($(window).scrollTop() > offsetTop && $(window).scrollTop() < offsetBottom) {
-              self.currentId = id;
-              self.currentTab = $(this);
-            }
-          });
-          if (this.currentId !== null) {
-            this.setSliderCss();
-          }
-        }
-
-        setSliderCss() {
-          let width = 0;
-          let left = 0;
-          if (this.currentTab) {
-            width = this.currentTab.css('width');
-            left = this.currentTab.offset().left;
-          }
-          $('.et-hero-tab-slider').css('width', width);
-          $('.et-hero-tab-slider').css('left', left);
-        }
+  const handleScroll = () => {
+    const etHeroTabs = document.querySelector('.et-hero-tabs');
+    if (!etHeroTabs) return;
+  
+    const offset = etHeroTabs.offsetTop + etHeroTabs.offsetHeight - 70;
+    if (window.pageYOffset > offset) {
+      document.querySelector('.et-hero-tabs-container').classList.add('et-hero-tabs-container--top');
+    } else {
+      document.querySelector('.et-hero-tabs-container').classList.remove('et-hero-tabs-container--top');
+    }
+  
+    let maxVisibleArea = 0;
+    let currentSectionId = null;
+  
+    sections.forEach(section => {
+      const sectionElement = document.getElementById(section._id);
+      const sectionTop = sectionElement.offsetTop - 70;
+      const sectionBottom = sectionElement.offsetTop + sectionElement.offsetHeight - 70;
+      const visibleArea = Math.min(window.pageYOffset + window.innerHeight, sectionBottom) - Math.max(window.pageYOffset, sectionTop);
+  
+      if (visibleArea > maxVisibleArea) {
+        maxVisibleArea = visibleArea;
+        currentSectionId = section._id;
       }
-
-      new StickyNavigation();
     });
-  }, []);
+  
+    // console.log("Current section ID:", currentSectionId);
+  
+    if (currentSectionId) {
+      const currentIndex = sections.findIndex(section => section._id === currentSectionId);
+      // console.log("Current section index:", currentIndex);
+  
+      const currentTab = document.querySelector(`.et-hero-tab[data-index="${currentIndex}"]`);
+      // console.log("Current tab:", currentTab);
+  
+      setSliderCss(currentTab);
+    }
+  };
+  ;
+  
+
+  const setSliderCss = (currentTab) => {
+    if (!currentTab) return;
+    const width = window.getComputedStyle(currentTab).width;
+    const left = currentTab.offsetLeft;
+    const tabSlider = document.querySelector('.et-hero-tab-slider');
+    tabSlider.style.width = width;
+    tabSlider.style.left = left + 'px';
+  };
+
+  useEffect(() => {
+    document.querySelectorAll('.et-hero-tab').forEach((tab, index) => {
+      tab.addEventListener('click', (event) => handleTabClick(event, index));
+      tab.setAttribute('data-index', index);
+    });
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [sections]);
 
   return (
     <div>
       <section className="et-hero-tabs">
-        <Lottie animationData={logo} loop={true} style={{ height: "15rem" }} />
+        <Lottie animationData={logo} loop={false} style={{ height: "15rem" }} />
         <h1>ELITE AVENUE</h1>
         <h3>Where luxury meets convenience</h3>
         <div className="et-hero-tabs-container">
-          <a className="et-hero-tab" href="#tab-fashion">Fashion</a>
-          <a className="et-hero-tab" href="#tab-beauty">Beauty & Grooming</a>
-          <a className="et-hero-tab" href="#tab-lifestyle">Lifestyle</a>
-          <a className="et-hero-tab" href="#tab-decor">Home Decor & Furnishings</a>
-          <a className="et-hero-tab" href="#tab-wellness">Wellness</a>
-          <a className="et-hero-tab" href="#tab-gifts">Gifts</a>
-          <a className="et-hero-tab" href="#tab-experiences">Experiences</a>
-          <a className="et-hero-tab" href="#tab-collectibles">Limited Edition & Collectibles</a>
+          {sections.map((section, index) => (
+            <a key={section._id} className="et-hero-tab" href={`#${index}`}>
+              {section.name}
+            </a>
+          ))}
           <span className="et-hero-tab-slider"></span>
         </div>
       </section>
 
       <main className="et-main">
-        <section className="et-slide" id="tab-fashion">
-          <Fashion />
-        </section>
-        <section className="et-slide" id="tab-beauty">
-          <BeautyandGrooming />
-        </section>
-        <section className="et-slide" id="tab-lifestyle">
-          <Lifestyle />
-        </section>
-        <section className="et-slide" id="tab-decor">
-          <HomeDecorandFurnishing />
-        </section>
-        <section className="et-slide" id="tab-wellness">
-          <Wellness />
-        </section>
-        <section className="et-slide" id="tab-gifts">
-          <Gifts />
-        </section>
-        <section className="et-slide" id="tab-experiences">
-          <Experiences />
-        </section>
-        <section className="et-slide" id="tab-collectibles">
-          <Collectibles />
-        </section>
+        {sections.map(section => (
+          <section key={section._id} className="et-slide" id={section._id}>
+            <Sections sectionName={section.name} />
+            {section.name === "Fashion" && <Fashion />}
+            {section.name === "Beauty & Grooming" && <BeautyandGrooming />}
+            {section.name === "Lifestyle" && <Lifestyle />}
+            {section.name === "Home Decor & Furnishings" && <HomeDecorandFurnishing />}
+            {section.name === "Wellness" && <Wellness />}
+            {section.name === "Gifts" && <Gifts />}
+            {section.name === "Experiences" && <Experiences />}
+            {section.name === "Limited Edition & Collectibles" && <Collectibles />}
+          </section>
+        ))}
       </main>
     </div>
   );

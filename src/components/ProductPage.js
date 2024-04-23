@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Navbar from './Navbar';
+import Breadcrumb from './Breadcrumb';
+
 
 const ProductPage = () => {
 
   const location = useLocation();
   const categoryId = location.state && location.state.categoryId;
+
 
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
@@ -70,7 +73,7 @@ const ProductPage = () => {
 
     .surprise-bubble {
         position: absolute;
-        bottom: 12rem;
+        bottom: 22rem;
         right: 2rem;
         border-radius: 50%;
         width: 30px;
@@ -201,16 +204,25 @@ const ProductPage = () => {
   };
   console.log("products", products);
 
+  const paths = [
+    { label: 'Home', url: '/' },
+    { label: `${categoryId}`, url: '/products' },
+    { label: `/${categoryId}`, url: '/products/category' },
+    { label: 'Current Page' }
+  ];
+
   return (
     <>
       <Navbar />
-      <div className="container" style={{ maxWidth: "80%" }}>
+      <Breadcrumb paths={paths} />
+ 
+      <div className="container" style={{ maxWidth: "90%", backgroundColor:"#fdfdfdf7" }}>
         <style>{styles}</style>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
         <div className="row">
           {products.map((products, index) => (
-            <div key={index} className="col-md-3">
+            <div key={index} className="col-md-3" style={{maxWidth:"18%"}}>
               <div className="dress-card">
                 <div className="dress-card-head">
                   <img className="dress-card-img-top" src={products.image} alt="" />
@@ -223,19 +235,20 @@ const ProductPage = () => {
                   </div>
                 </div>
                 <div className="dress-card-body">
-                  <h4 className="dress-card-title">{products.name}</h4>
+                  <h5 className="dress-card-title">{products.name}</h5>
+                  <p className="dress-card-para">{products.description}</p>
+                  {/* <p className="dress-card-para">{products.rating}</p> */}
                   <p className="dress-card-para">
                     {products.discount ? (
                       <>
-                        <span className="dress-card-price">🤑🤑 Rs. {products.price - (products.price * parseFloat(products.discount) / 100).toFixed(2)} &ensp;</span>
+                        <span className="dress-card-price"> Rs. {products.price - (products.price * parseFloat(products.discount) / 100).toFixed(2)} &ensp;</span>
                         <span className="dress-card-crossed">{products.price}</span>
                         <span className="dress-card-off">&ensp;({products.discount} OFF)</span>
                       </>
                     ) :
-                      <span className="dress-card-price">🤑🤑 Rs. {products.price} &ensp;</span>
+                      <span className="dress-card-price"> Rs. {products.price} &ensp;</span>
                     }
                   </p>
-                  <p className="dress-card-para">{products.description}, {products.rating}</p>
                 </div>
               </div>
 

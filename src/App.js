@@ -9,6 +9,7 @@ import Temp from './components/extra2';
 import Wishlist from './components/Wishlist';
 
 import React from 'react';
+import Navbar from './components/Navbar2';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path='/post' element={<ProductForm />} />
           <Route path='/temp' element={<Temp />} />
           <Route path='/wishlist' element={<Wishlist />} />
+          <Route path='/navbar' element={<Navbar />} />
         </Routes>
       </Router>
   );

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './../css/grid.css';
 
 function Fashion({ name, title, onClick }) {
+  
+
   return (
     <div className="profile-card" onClick={onClick}>
       <div className="profile-content">
@@ -47,39 +49,43 @@ function FashionContainer() {
     }
   };
 
+
+
   return (
-    <div className="profile-container">
-      <Fashion
-        name="Indian Wear"
-        title="Traditional Elegance"
-        onClick={() => handleClick("Indian Wear")}
-      />
-      <Fashion
-        name="Western Wear"
-        title="Contemporary Style"
-        onClick={() => handleClick("Western Wear")}
-      />
-      <Fashion
-        name="Footwear"
-        title="Fashionable Comfort"
-        onClick={() => handleClick("Footwear")}
-      />
-      <Fashion
-        name="Accessories"
-        title="Timeless Glamour"
-        onClick={() => handleClick("Accessories")}
-      />
-      <Fashion
-        name="Bags"
-        title="Functional Chic"
-        onClick={() => handleClick("Bags")}
-      />
-      <Fashion
-        name="Kids"
-        title="Playful Cuteness"
-        onClick={() => handleClick("Kids")}
-      />
-    </div>
+    <>
+      <div className="profile-container">
+        <Fashion
+          name="Indian Wear"
+          title="Traditional Elegance"
+          onClick={() => handleClick("Indian Wear")}
+        />
+        <Fashion
+          name="Western Wear"
+          title="Contemporary Style"
+          onClick={() => handleClick("Western Wear")}
+        />
+        <Fashion
+          name="Footwear"
+          title="Fashionable Comfort"
+          onClick={() => handleClick("Footwear")}
+        />
+        <Fashion
+          name="Accessories"
+          title="Timeless Glamour"
+          onClick={() => handleClick("Accessories")}
+        />
+        <Fashion
+          name="Bags"
+          title="Functional Chic"
+          onClick={() => handleClick("Bags")}
+        />
+        <Fashion
+          name="Kids"
+          title="Playful Cuteness"
+          onClick={() => handleClick("Kids")}
+        />
+      </div>
+    </>
   );
 }
 
