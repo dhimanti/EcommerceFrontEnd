@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Products from './components/ProductPage';
 import Empty from './components/Empty';
 import ProductForm from './components/ProductForm';
-import Temp from './components/extra2';
+import Temp from './components/Item';
 import Wishlist from './components/Wishlist';
 
 import React from 'react';
@@ -24,7 +24,7 @@ function App() {
           <Route path='/products' element={<Products />} />
           <Route path='/empty' element={<Empty />} />
           <Route path='/post' element={<ProductForm />} />
-          <Route path='/temp' element={<Temp />} />
+          <Route path='/item' element={<Temp />} />
           <Route path='/wishlist' element={<Wishlist />} />
           <Route path='/navbar' element={<Navbar />} />
         </Routes>

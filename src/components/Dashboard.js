@@ -10,7 +10,7 @@ import Wellness from './sections/Wellness';
 import Gifts from './sections/Gifts';
 import Experiences from './sections/Experiences';
 import Collectibles from './sections/Collectibles';
-import Sections from './Sections';
+import Category from './Category';
 
 function Dashboard() {
   const [sections, setSections] = useState([]);
@@ -120,15 +120,7 @@ function Dashboard() {
       <main className="et-main">
         {sections.map(section => (
           <section key={section._id} className="et-slide" id={section._id}>
-            <Sections sectionName={section.name} />
-            {section.name === "Fashion" && <Fashion />}
-            {section.name === "Beauty & Grooming" && <BeautyandGrooming />}
-            {section.name === "Lifestyle" && <Lifestyle />}
-            {section.name === "Home Decor & Furnishings" && <HomeDecorandFurnishing />}
-            {section.name === "Wellness" && <Wellness />}
-            {section.name === "Gifts" && <Gifts />}
-            {section.name === "Experiences" && <Experiences />}
-            {section.name === "Limited Edition & Collectibles" && <Collectibles />}
+            <Category sectionName={section.name} />
           </section>
         ))}
       </main>

@@ -7,11 +7,17 @@ import wishlist from "./animations/wishlist.json";
 import user from "./animations/user.json";
 import cart from "./animations/cart.json";
 
+import {SearchBar} from './searchComponents/SearchBar.js';
+import { SearchResultsList } from "./searchComponents/SearchResultsList.js";
+
+
 import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   let navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [results, setResults] = useState([]);
+
 
   const handleDropdownClick = () => {
     setDropdownOpen(!dropdownOpen);
@@ -70,8 +76,11 @@ function Navbar() {
                 Collectibles
               </a>
             </li>
-
           </ul>
+          <div className="search-bar-container" style={{width:"20%", margin:"auto", display:"flex", flexDirection:"column", alignItems:"center", minWidth:"200px"}}>
+            <SearchBar setResults={setResults} />
+            {results && results.length > 0 && <SearchResultsList results={results} />}
+          </div>
           <ul className="header__ul header__right">
             <li className="header__li">
               <div className={`header__a ${dropdownOpen ? 'open' : ''}`} onClick={handleDropdownClick}>

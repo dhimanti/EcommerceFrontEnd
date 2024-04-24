@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
@@ -9,12 +9,13 @@ const ProductPage = () => {
 
   const location = useLocation();
   const categoryId = location.state && location.state.categoryId;
-
+  const categoryName = location.state && location.state.categoryName;
+  const sectionName = location.state && location.state.sectionName;
 
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
   const [isHeartFilled, setIsHeartFilled] = useState(Array(products.length).fill(false));
-
+  const navigate = useNavigate();
   const styles = `
     // body {
     //     padding-top: 56px;
@@ -145,7 +146,7 @@ const ProductPage = () => {
     fetch(`http://localhost:4000/products/${categoryId}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data.products);
+        // console.log(data.products);
         setProducts(data.products);
       })
       .catch(error => console.error('Error fetching products:', error));
@@ -153,7 +154,7 @@ const ProductPage = () => {
     const token = localStorage.getItem('token');
     if (token) {
       const data = jwtDecode(token);
-      console.log(data);
+      // console.log(data);
       setUserId(data.userId);
     }
   }, [categoryId]);
@@ -163,8 +164,6 @@ const ProductPage = () => {
       const newState = [...prevState];
       newState[index] = !newState[index];
       if (newState[index]) {
-        console.log("post");
-
         fetch('http://localhost:4000/wishlist/addProduct', {
           method: 'POST',
           headers: {
@@ -180,9 +179,8 @@ const ProductPage = () => {
             console.log("Error : ", error);
           })
       } else {
-        console.log("delete");
-        console.log(userId);
-        console.log(id);
+        // console.log(userId);
+        // console.log(id);
 
         fetch('http://localhost:4000/wishlist/removeProduct', {
           method: 'DELETE',
@@ -202,27 +200,29 @@ const ProductPage = () => {
       return newState;
     });
   };
-  console.log("products", products);
 
   const paths = [
     { label: 'Home', url: '/' },
-    { label: `${categoryId}`, url: '/products' },
-    { label: `/${categoryId}`, url: '/products/category' },
-    { label: 'Current Page' }
+    { label: sectionName, url: '/home' },
+    { label: categoryName }
   ];
 
+  function handleClick(id, name) {
+    console.log(name);
+    navigate("/item",  { state: { product: id, productName : name, categoryName: categoryName, sectionName: sectionName} });
+  }
   return (
     <>
       <Navbar />
       <Breadcrumb paths={paths} />
- 
-      <div className="container" style={{ maxWidth: "90%", backgroundColor:"#fdfdfdf7" }}>
+
+      <div className="container" style={{ maxWidth: "90%", backgroundColor: "#fdfdfdf7" }}>
         <style>{styles}</style>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
         <div className="row">
           {products.map((products, index) => (
-            <div key={index} className="col-md-3" style={{maxWidth:"18%"}}>
+            <div key={index} className="col-md-3" style={{ maxWidth: "18%" }} onClick={() => handleClick(products._id, products.name)}>
               <div className="dress-card">
                 <div className="dress-card-head">
                   <img className="dress-card-img-top" src={products.image} alt="" />

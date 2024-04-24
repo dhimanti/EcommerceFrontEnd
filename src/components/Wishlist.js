@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Navbar from './Navbar';
+import Breadcrumb from './Breadcrumb';
 
 const Wishlist = () => {
 
@@ -221,10 +222,15 @@ const Wishlist = () => {
             return newState;
         });
     };
+    const paths = [
+        { label: 'Home', url: '/' },
+        { label: "Wishlist" }
+      ];
 
     return (
         <>
         <Navbar />
+        <Breadcrumb paths={paths} />
         <div className="container" style={{ maxWidth: "80%" }}>
             <style>{styles}</style>
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
